@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab Work 12</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    button {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Завдання 1 -->
+<h3>1. Робота з вікнами:</h3>
+<button onclick="openWindow()">Відкрити вікно</button>
+
+<!-- Завдання 2 -->
+<h3>2. Зміна стилю тексту:</h3>
+<p id="text">I learning JavaScript events!</p>
+<div>
+  <button onclick="changeCSS()">Change style!</button>
+</div>
+
+<!-- Завдання 3 -->
+<h3>3. Події на кнопках та лінці:</h3>
+<button onclick="document.body.style.backgroundColor='blue'">Синій фон</button>
+<button ondblclick="document.body.style.backgroundColor='pink'">Рожевий фон</button>
+<button 
+  onmousedown="document.body.style.backgroundColor='brown'"
+  onmouseup="document.body.style.backgroundColor='white'">Коричневий при натисканні</button>
+<br>
+<a href="#" 
+   onmouseover="document.body.style.backgroundColor='yellow'"
+   onmouseout="document.body.style.backgroundColor='white'">Наведи курсор</a>
+
+<!-- Завдання 4 -->
+<h3>4. Видалення елементів списку:</h3>
+<select id="mySelect">
+  <option>Item 1</option>
+  <option>Item 2</option>
+  <option>Item 3</option>
+</select>
+<button onclick="removeSelected()">Видалити вибране</button>
+
+<!-- Завдання 5 -->
+<h3>5. Повідомлення при подіях на кнопці:</h3>
+<button id="eventButton">Події</button>
+<p id="msg"></p>
+
+<!-- Завдання 6 -->
+<h3>6. Розмір вікна:</h3>
+<p id="sizeOutput">Розмір вікна: </p>
+
+<!-- Завдання 7* -->
+<h3>7*. Динамічне оновлення міст:</h3>
+<select name="country" id="country">
+  <option value="ger">Germany</option>
+  <option value="usa">USA</option>
+  <option value="ukr">Ukraine</option>
+</select>
+
+<select name="cities" id="cities"></select>
+<p id="selection"></p>
+
+<script>
+// Завдання 1
+let newWindow;
+function openWindow() {
+  newWindow = window.open('', '', 'width=300,height=300');
+  setTimeout(() => newWindow.resizeTo(500, 500), 2000);
+  setTimeout(() => newWindow.moveTo(200, 200), 4000);
+  setTimeout(() => newWindow.close(), 6000);
+}
+
+// Завдання 2
+function changeCSS() {
+  let p = document.getElementById('text');
+  p.style.color = 'orange';
+  p.style.fontSize = '20px';
+  p.style.fontFamily = 'Comic Sans MS';
+}
+
+// Завдання 4
+function removeSelected() {
+  let select = document.getElementById("mySelect");
+  select.remove(select.selectedIndex);
+}
+
+// Завдання 5
+let eventButton = document.getElementById("eventButton");
+let msg = document.getElementById("msg");
+
+eventButton.addEventListener("click", () => msg.textContent = "I was pressed!");
+eventButton.addEventListener("mouseover", () => msg.textContent = "Mouse on me!");
+eventButton.addEventListener("mouseout", () => msg.textContent = "Mouse is not on me!");
+
+// Завдання 6
+function updateSize() {
+  document.getElementById("sizeOutput").textContent = `Розмір вікна: ${window.innerWidth} x ${window.innerHeight}`;
+}
+window.onresize = updateSize;
+updateSize(); 
+
+// Завдання 7*
+const countryCities = {
+  ger: ["Berlin", "Hamburg", "Munich"],
+  usa: ["New York", "Los Angeles", "Chicago"],
+  ukr: ["Kyiv", "Lviv", "Odesa"]
+};
+
+let countrySelect = document.getElementById("country");
+let citiesSelect = document.getElementById("cities");
+let selectionDisplay = document.getElementById("selection");
+
+function updateCities() {
+  let countryCode = countrySelect.value;
+  let cities = countryCities[countryCode];
+
+  citiesSelect.innerHTML = ""; 
+
+  cities.forEach(city => {
+    let option = document.createElement("option");
+    option.text = city;
+    citiesSelect.add(option);
+  });
+
+  selectionDisplay.textContent = `Обрана країна: ${countrySelect.options[countrySelect.selectedIndex].text}, місто: ${cities[0]}`;
+}
+
+countrySelect.addEventListener("change", updateCities);
+citiesSelect.addEventListener("change", () => {
+  selectionDisplay.textContent = `Обрана країна: ${countrySelect.options[countrySelect.selectedIndex].text}, місто: ${citiesSelect.value}`;
+});
+
+updateCities(); 
+
+</script>
+</body>
+</html>
